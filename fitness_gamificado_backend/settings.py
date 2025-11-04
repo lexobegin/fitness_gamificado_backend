@@ -31,7 +31,7 @@ AUTHENTICATION_BACKENDS = [
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -62,6 +62,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",  # Angular development
     #"https://tudominio-admin.com",  # Angular production
+    "http://10.0.2.2:8000", # Emulador Android
     "http://localhost:3000",  # Flutter web (si aplica)
 ]
 
@@ -145,7 +146,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'fgamificado_db',
         'USER': 'postgres',
-        'PASSWORD': '12345',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '5432',
         'OPTIONS': {
