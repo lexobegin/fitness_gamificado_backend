@@ -31,11 +31,28 @@ AUTHENTICATION_BACKENDS = [
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['api-fitness-gamificado-backend.duckdns.org', 'localhost', '127.0.0.1', '0.0.0.0', '192.168.0.5', '192.168.0.6', '192.168.0.4']
+
+# Configuración CORS
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # origen de Vite + React
+    "http://localhost:4200",  # Angular development
+    #"https://tudominio-admin.com",  # Angular production
+    "http://localhost:3000",  # Flutter web (si aplica)
+    "http://localhost:8000",
+    "http://192.168.0.6:4200",  # Si Angular se accede desde red local
+    "http://127.0.0.1:8100",    # Ionic o Flutter en navegador
+]
+
+# O permitir todos los orígenes en desarrollo
+CORS_ALLOW_ALL_ORIGINS = True  # Solo en desarrollo
+
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,8 +60,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'core',
-    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -56,31 +74,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-# Configuración CORS
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",  # Angular development
-    #"https://tudominio-admin.com",  # Angular production
-    "http://localhost:3000",  # Flutter web (si aplica)
-]
-
-# O permitir todos los orígenes en desarrollo
-CORS_ALLOW_ALL_ORIGINS = True  # Solo en desarrollo
-
-CORS_ALLOW_CREDENTIALS = True
-
-# Headers permitidos
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
 ]
 
 ROOT_URLCONF = 'fitness_gamificado_backend.urls'
@@ -100,40 +93,7 @@ TEMPLATES = [
     },
 ]
 
-# Configuración del modelo de usuario personalizado
-AUTH_USER_MODEL = 'core.Usuario'
-
-# Configuración de REST Framework
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-    'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend',
-        'rest_framework.filters.SearchFilter',
-        'rest_framework.filters.OrderingFilter',
-    ],
-}
-
-SIMPLE_JWT = {
-    #'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),        # El token de acceso durará 7 días
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=10),      # El token de refresco durará 10 días
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'AUTH_HEADER_TYPES': ('Bearer',),                  # Usa "Bearer <token>" en los headers
-}
-
-
 WSGI_APPLICATION = 'fitness_gamificado_backend.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -154,6 +114,8 @@ DATABASES = {
     }
 }
 
+# Configuración del modelo de usuario personalizado
+AUTH_USER_MODEL = 'core.Usuario'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -198,3 +160,75 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configuración de REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+}
+
+SIMPLE_JWT = {
+    #'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),        # El token de acceso durará 7 días
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=10),      # El token de refresco durará 10 días
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),                  # Usa "Bearer <token>" en los headers
+}
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+# Si usas cookies/sessions
+CSRF_TRUSTED_ORIGINS = [
+    "https://smart-sales-frontend-six.vercel.app",
+    "https://api-fitness-gamificado-backend.duckdns.org",
+]
+
+# Middleware adicional para headers
+class CorsMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        response['Access-Control-Allow-Origin'] = 'https://smart-sales-frontend-six.vercel.app'
+        response['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, DELETE'
+        response['Access-Control-Allow-Headers'] = 'Authorization, Content-Type, X-CSRFToken'
+        response['Access-Control-Allow-Credentials'] = 'true'
+        return response
+
+
+# Agrega el middleware al final
+MIDDLEWARE.append('fitness_gamificado_backend.settings.CorsMiddleware')
