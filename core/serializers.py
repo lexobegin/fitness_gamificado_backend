@@ -41,6 +41,11 @@ class UsuarioRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=6)
     password_confirm = serializers.CharField(write_only=True, min_length=6)
 
+    tipo_usuario = serializers.ChoiceField(
+        choices=Usuario.TIPO_USUARIO_CHOICES,
+        required=True
+    )
+    
     class Meta:
         model = Usuario
         fields = [

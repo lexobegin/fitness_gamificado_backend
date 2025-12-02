@@ -417,7 +417,7 @@ class Rutina(models.Model):
     def grupos_musculares(self):
         """Retorna los grupos musculares únicos trabajados en la rutina"""
         ejercicios = self.rutina_ejercicios.select_related('ejercicio').all()
-        grupos = set(ej.gercicio.grupo_muscular for ej in ejercicios if ej.ejercicio.grupo_muscular)
+        grupos = set(ej.ejercicio.grupo_muscular for ej in ejercicios if ej.ejercicio.grupo_muscular)
         return list(grupos)
 
 class RutinaEjercicio(models.Model):
