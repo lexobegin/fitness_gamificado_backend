@@ -384,9 +384,9 @@ class DeteccionPosturaSerializer(serializers.ModelSerializer):
     class Meta:
         model = DeteccionPostura
         fields = [
-            'id', 'ejercicio', 'ejercicio_nombre', 'usuario', 'usuario_nombre',
+            'id', 'ejercicio', 'ejercicio_nombre', 'usuario_nombre',
             'modelo_ia', 'modelo_nombre', 'fecha_deteccion', 'puntos_corporales_detectados',
-            'precision_deteccion', 'puntuacion_tecnica', 'imagen_analizada_url', 'video_analizada_url',
+            'precision_deteccion', 'puntuacion_tecnica', 'imagen_analizada_url', 'video_analizado_url',
             'duracion_analisis_segundos', 'metadata_analisis', 'es_confiable', 'nivel_calificacion',
             'recompensa_puntos'
         ]
