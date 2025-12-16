@@ -151,7 +151,7 @@ class LogActividadViewSet(viewsets.ReadOnlyModelViewSet):
 
 # ========== VIEWSETS DE ENTRENAMIENTO Y EJERCICIOS ==========
 
-class EjercicioViewSet(viewsets.ReadOnlyModelViewSet):
+class EjercicioViewSet(viewsets.ModelViewSet):
     queryset = Ejercicio.objects.all()
     serializer_class = EjercicioSerializer
     permission_classes = [permissions.IsAuthenticated]
